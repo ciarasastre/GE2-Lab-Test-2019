@@ -7,11 +7,18 @@ public class FighterAi : MonoBehaviour
 
     public GameObject spawn;
     public GameObject target;
+    public GameObject enemy;
 
-    public float speed;
+    public Vector3 Destination;
+
+    public float speed = 10f;
 
     public GameObject[] waypoints;
-    public int waypointIndex;
+    public int waypointIndex = 0;
+    
+
+    //Fighter will have 7 tiberium
+    public float tiberium = 7;
 
     public enum State
     {
@@ -26,64 +33,80 @@ public class FighterAi : MonoBehaviour
     void Start()
     {
         state = FighterAi.State.SEEK;
-        StartCoroutine("FSM");
+        StartCoroutine("FSM()");
     }
 
     // Update is called once per frame
     void Update()
     {
-        IEnumerator FSM()
+    }
+
+    IEnumerator FSM()
+    {
+        switch (state)
         {
-            switch(state)
-            {
-                case State.SEEK:
-                    Seek();
-                    break;
+            case FighterAi.State.SEEK:
+                Seek();
+                break;
 
-                case State.ATTACK:
-                    Attack();
-                    break;
+            case FighterAi.State.ATTACK:
+                Attack();
+                break;
 
-                case State.REFUEL:
-                    Refuel();
-                    break;
+            case FighterAi.State.REFUEL:
+                Refuel();
+                break;
 
-            }
-
-            yield return null;
         }
+
+        yield return null;
     }
 
     void Seek()
     {
         //Fighter is going to wander to find a base
-        //if(Vector3.Distance(transform.position, waypoints[waypointIndex].transform.position <= 2))
-        // {
+        if (Vector3.Distance(enemy.transform.position, waypoints[waypointIndex].transform.position) <= 2)
+        {
+            //Get destination
+            Destination = waypoints[waypointIndex].transform.position;
 
-        // }
+            //Now move there
+            float dist = speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(spawn.transform.position, Destination, speed);
 
-        target = waypoints[0];
-        float dist = speed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(spawn.transform.position, target.transform.position, speed);
+        }
+        else if (Vector3.Distance(enemy.transform.position, waypoints[waypointIndex].transform.position) >= 2)
+        {
 
+            waypointIndex += 1;
 
+            if (waypointIndex <= 4)
+            {
+                waypointIndex = 0;
+            }
 
+        }
     }
+
 
     void Attack()
     {
+        //If you are in the Attack state then spawn bullets and direct them towards the base
 
+        //Your bullets will decrease your tiberium eah round
+
+        //The base will take damadge
     }
 
     void Refuel()
     {
-
+        //Return back to the base to refuel your tiberium
     }
 
     private void OnTriggerEnter(Collider col)
     {
         //If you collide with an enemy base start attacking
-        if(col.tag == "Enemy")
+        if(col.tag == "Finish")
         {
             state = FighterAi.State.ATTACK;
         }

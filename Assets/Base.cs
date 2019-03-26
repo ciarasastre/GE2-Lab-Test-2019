@@ -12,7 +12,7 @@ public class Base : MonoBehaviour
 
     public GameObject fighterPrefab;
     public GameObject Spawn;
-    public GameObject fighter;
+    //public GameObject fighter;
 
 
     // Start is called before the first frame update
@@ -39,7 +39,7 @@ public class Base : MonoBehaviour
         //Check if the unit == 10 then spawn a fighter ship
         if(tiberium == 10)
         {
-            fighter = Instantiate(fighterPrefab, Spawn.transform.position, Quaternion.identity);
+            Instantiate(fighterPrefab, Spawn.transform.position, Quaternion.identity);
             tiberium = tiberium - 10;
             
         }
