@@ -32,13 +32,15 @@ public class FighterAi : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        state = FighterAi.State.SEEK;
+        //state = FighterAi.State.SEEK;
         //StartCoroutine(FSM());
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+        state = FighterAi.State.SEEK;
         StartCoroutine(FSM());
     }
 
@@ -66,26 +68,30 @@ public class FighterAi : MonoBehaviour
     void Seek()
     {
         //Fighter is going to wander to find a base
-        if (Vector3.Distance(enemy.transform.position, waypoints[waypointIndex].transform.position) >= 2)
+        if (Vector3.Distance(enemy.transform.position, waypoints[waypointIndex].transform.position) >= 4)
         {
+            Debug.Log(Vector3.Distance(enemy.transform.position, waypoints[waypointIndex].transform.position));
+
             //Get destination
             Destination = waypoints[waypointIndex].transform.position;
 
             //Now move there
             float dist = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(spawn.transform.position, Destination, dist);
+            transform.position = Vector3.MoveTowards(Destination, enemy.transform.position, dist);
 
         }
-        else if (Vector3.Distance(enemy.transform.position, waypoints[waypointIndex].transform.position) <= 2)
+        else if (Vector3.Distance(enemy.transform.position, waypoints[waypointIndex].transform.position) <= 4) //If you get close move to the next point
         {
-
             waypointIndex += 1;
 
-            if (waypointIndex <= 4)
+            if (waypointIndex <= waypoints.Length)
             {
                 waypointIndex = 0;
             }
-
+        }
+        else
+        {
+            transform.position = Vector3.zero;
         }
     }
 
