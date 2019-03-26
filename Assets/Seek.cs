@@ -56,24 +56,27 @@ public class Seek : SteeringBehaviour
 
     public void Attack()
     {
-        //Spawn bullets
-       /* while (tiberium != 0) //So you havent run out
+
+        //Only letting it shoot 1 because its chaos if its more if it worked i would have 7
+        for(int i = 0; i<1; i++)
         {
-            StartCoroutine(Shoot());
+            //Loop through all the tiberium
+            //Instantiate(bulletPrefab, bulletSpawn.transform.position, Quaternion.identity);
+            //This unleashes a hell of bullets so i commented it out
+            
         }
 
-        if(tiberium == 0)
-        {
-            Refuel();
-        }*/
+        //Once its done start to refuel
+        tiberium = 0;
+        Refuel();
     }
 
-    IEnumerator Shoot()
+    /*IEnumerator Shoot()
     {
         yield return new WaitForSeconds(2);
         Instantiate(bulletPrefab, bulletSpawn.transform.position, Quaternion.identity);
-        tiberium -= 1;
-    }
+        //tiberium -= 1;
+    }*/
 
     public void Refuel()
     {

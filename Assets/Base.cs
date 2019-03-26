@@ -52,4 +52,15 @@ public class Base : MonoBehaviour
 
         tiberium = 10;
     }
+
+    //If the base takes a hit from the bullets remove hp
+    private void OnTriggerEnter(Collider col)
+    {
+        //If you collide with an enemy base start attacking
+        if (col.tag == "Bullet")
+        {
+            //state = FighterAi.State.ATTACK;
+            tiberium -= .5f;
+        }
+    }
 }

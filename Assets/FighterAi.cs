@@ -11,7 +11,7 @@ public class FighterAi : MonoBehaviour
 
     public Vector3 Destination;
 
-    public float speed = 10f;
+    public float speed = .3f;
 
     public GameObject[] waypoints;
     public int waypointIndex = 0;
@@ -33,12 +33,13 @@ public class FighterAi : MonoBehaviour
     void Start()
     {
         state = FighterAi.State.SEEK;
-        StartCoroutine(FSM());
+        //StartCoroutine(FSM());
     }
 
     // Update is called once per frame
     void Update()
     {
+        StartCoroutine(FSM());
     }
 
     IEnumerator FSM()
@@ -65,17 +66,17 @@ public class FighterAi : MonoBehaviour
     void Seek()
     {
         //Fighter is going to wander to find a base
-        if (Vector3.Distance(enemy.transform.position, waypoints[waypointIndex].transform.position) <= 2)
+        if (Vector3.Distance(enemy.transform.position, waypoints[waypointIndex].transform.position) >= 2)
         {
             //Get destination
             Destination = waypoints[waypointIndex].transform.position;
 
             //Now move there
             float dist = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(spawn.transform.position, Destination, speed);
+            transform.position = Vector3.MoveTowards(spawn.transform.position, Destination, dist);
 
         }
-        else if (Vector3.Distance(enemy.transform.position, waypoints[waypointIndex].transform.position) >= 2)
+        else if (Vector3.Distance(enemy.transform.position, waypoints[waypointIndex].transform.position) <= 2)
         {
 
             waypointIndex += 1;
