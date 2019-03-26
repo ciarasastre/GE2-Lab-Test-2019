@@ -33,7 +33,7 @@ public class FighterAi : MonoBehaviour
     void Start()
     {
         state = FighterAi.State.SEEK;
-        StartCoroutine("FSM()");
+        StartCoroutine(FSM());
     }
 
     // Update is called once per frame
